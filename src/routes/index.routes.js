@@ -3,7 +3,7 @@ import { index, ping } from "../controllers/index.rotes.js";
 
 const router = Router();
 
-router.get("/", index);
+router.get("/index", index);
 
 router.get("/ping", ping);
 
