@@ -1,11 +1,14 @@
 {
     "version":2,
     "builds":[{
-        "src":"./src/app.js",
+        "src":"./index.js",
         "use":"@vercel/node"
         }],
-    "routes":[{
-        "src":"/(.*)",
-        "dest" : "/"
-        }]
+    "routes": [
+        { "src": "/api/index", "dest": "api/index.js" },
+        { "src": "/api/usuarios", "dest": "api/usuarios.js" },
+        { "src": "/api/employees", "dest": "api/employees.js" },
+        { "src": "/ping", "dest": "api/ping.js" },
+        { "src": "/(.*)", "dest": "api/index.js" }
+      ]
   }
