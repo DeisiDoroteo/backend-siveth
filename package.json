@@ -6,7 +6,7 @@
   "type": "module",
   "scripts": {
     "dev": "nodemon src/index.js",
-    "start": "node src/node index.js",
+    "start": "node src/index.js",
     "test": "NODE_OPTIONS=--experimental-vm-modules jest --coverage",
     "pretest": "cross-env NODE_ENV=test jest --clearCache"
   },
