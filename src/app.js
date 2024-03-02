@@ -11,8 +11,8 @@ app.use(morgan("dev"));
 app.use(express.json()); // Este middleware debe ejecutarse antes de las rutas
 
 // Routes
-app.use("/index", indexRoutes);
-// app.use("/ping", indexRoutes);
+app.use("/", indexRoutes);
+app.use("/ping", indexRoutes);
 app.use("/api", employeesRoutes);
 app.use("/api", usuariosRoutes);
 
