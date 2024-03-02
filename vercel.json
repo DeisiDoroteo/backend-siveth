@@ -1,25 +1,11 @@
 {
-    "version": 2,
-    "functions": {
-      "api/index.js": {
-        "runtime": "@vercel/node"
-      },
-      "api/ping.js": {
-        "runtime": "@vercel/node"
-      },
-      "api/usuarios.js": {
-        "runtime": "@vercel/node"
-      },
-      "api/employees.js": {
-        "runtime": "@vercel/node"
-      }
-    },
-    "routes": [
-      { "src": "/api/index", "dest": "api/index.js" },
-      { "src": "/api/ping", "dest": "api/ping.js" },
-      { "src": "/api/usuarios", "dest": "api/usuarios.js" },
-      { "src": "/api/employees", "dest": "api/employees.js" },
-      { "src": "/(.*)", "dest": "api/index.js" }
-    ]
+    "version":2,
+    "builds":[{
+        "src":"./index.js",
+        "use":"@vercel/node"
+        }],
+    "routes":[{
+        "src":"/(.*)",
+        "dest" : "/"
+        }]
   }
-  
