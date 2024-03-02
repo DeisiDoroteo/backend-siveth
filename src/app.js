@@ -13,7 +13,7 @@ app.use(express.json()); // Este middleware debe ejecutarse antes de las rutas
 // Routes
 app.use("/", indexRoutes);
 app.use("/ping", indexRoutes);
-app.use("/usuarios", usuariosRoutes);   // Corregir las rutas para evitar la ambigüedad
+app.use("/api", usuariosRoutes);   // Corregir las rutas para evitar la ambigüedad
 
 app.use((req, res, next) => {
   res.status(404).json({ message: "Not found" });
