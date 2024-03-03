@@ -44,6 +44,9 @@ export const logUser = async (req, res) => {
   try {
     const { correo, contrasenia } = req.body;
     
+    console.log('Correo recibido:', correo);
+    console.log('Contraseña recibida:', contrasenia);
+    
     // Consultar la base de datos para verificar las credenciales
     const query = 'SELECT * FROM usuarios WHERE Correo = ?';
     const [rows] = await pool.query(query, [correo]);
@@ -51,12 +54,16 @@ export const logUser = async (req, res) => {
     if (rows.length > 0) {
       // Usuario encontrado en la base de datos
       const usuario = rows[0];
+      console.log('Contraseña almacenada en la base de datos:', usuario.Password);
+      
       // Comparar la contraseña hasheada almacenada en la base de datos con la contraseña proporcionada
       bcrypt.compare(contrasenia, usuario.Password, (err, result) => {
         if (err) {
           console.error('Error al comparar contraseñas:', err);
           res.status(500).json({ status: 'error', message: 'Error interno del servidor' });
         } else {
+          console.log('Resultado de comparación de contraseñas:', result);
+          
           if (result) {
             // Contraseña correcta: Usuario autenticado
             res.json({ status: 'success', message: 'Inicio de sesión exitoso' });
