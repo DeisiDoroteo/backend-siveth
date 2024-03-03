@@ -61,6 +61,7 @@ export const enviarCorreoRecuperacion = async (req, res) => {
         }
       });
       
+      
     } else {
       return res.status(404).json({ message: 'No se encontró un código de recuperación asociado a este usuario.' });
     }
