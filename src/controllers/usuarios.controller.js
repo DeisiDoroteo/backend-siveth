@@ -39,7 +39,6 @@ export const getUsers = async (req, res) => {
 };
 
 
-
 export const logUser = async (req, res) => {
   try {
     console.log('Datos recibidos en la solicitud POST:', req.body); 
@@ -55,22 +54,17 @@ export const logUser = async (req, res) => {
       console.log('Contraseña almacenada en la base de datos:', usuario.Password);
       
       // Comparar la contraseña hasheada almacenada en la base de datos con la contraseña proporcionada
-      bcrypt.compare(contrasenia, usuario.Password, (err, result) => {
-        if (err) {
-          console.error('Error al comparar contraseñas:', err);
-          res.status(500).json({ status: 'error', message: 'Error interno del servidor' });
-        } else {
-          console.log('Resultado de comparación de contraseñas:', result);
-          
-          if (result) {
-            // Contraseña correcta: Usuario autenticado
-            res.json({ status: 'success', message: 'Inicio de sesión exitoso' });
-          } else {
-            // Contraseña incorrecta
-            res.status(400).json({ status: 'error', message: 'Credenciales incorrectas' });
-          }
-        }
-      });
+      const result = await bcrypt.compare(contrasenia, usuario.Password);
+
+      console.log('Resultado de comparación de contraseñas:', result);
+      
+      if (result) {
+        // Contraseña correcta: Usuario autenticado
+        res.json({ status: 'success', message: 'Inicio de sesión exitoso' });
+      } else {
+        // Contraseña incorrecta
+        res.status(400).json({ status: 'error', message: 'Credenciales incorrectas' });
+      }
     } else {
       // Usuario no encontrado en la base de datos
       res.status(400).json({ status: 'error', message: 'Usuario no registrado' });
