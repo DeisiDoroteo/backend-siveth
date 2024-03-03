@@ -12,6 +12,7 @@ const transporter = nodemailer.createTransport({
 
 export const AsignarCodigo = async (req, res) => {
   try {
+    console.log('Datos recibidos en la solicitud POST:', req.body); 
     const { correo } = req.body;
     const randomCode = Math.floor(1000 + Math.random() * 9000);
 
