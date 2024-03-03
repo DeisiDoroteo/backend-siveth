@@ -15,6 +15,6 @@ router.get("/usuarios", getUsers);
 router.post("/Create", createUser);
 
 // Insertar un usuario
-router.post("/login", logUser);
+router.post("/logueo", logUser);
 
 export default router;
