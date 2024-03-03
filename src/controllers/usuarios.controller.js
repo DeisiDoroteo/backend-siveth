@@ -42,11 +42,9 @@ export const getUsers = async (req, res) => {
 
 export const logUser = async (req, res) => {
   try {
+    console.log('Datos recibidos en la solicitud POST:', req.body); 
     const { correo, contrasenia } = req.body;
-    
-    console.log('Correo recibido:', correo);
-    console.log('Contraseña recibida:', contrasenia);
-    
+       
     // Consultar la base de datos para verificar las credenciales
     const query = 'SELECT * FROM usuarios WHERE Correo = ?';
     const [rows] = await pool.query(query, [correo]);
