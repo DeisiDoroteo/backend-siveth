@@ -45,7 +45,7 @@ export const logUser= async (req, res) => {
     const { correo, contrasenia } = req.body;
 
     // Consultar la base de datos para verificar las credenciales
-    const [rows] = await pool.query("SELECT * FROM Usuarios WHERE Correo = ?", [correo]);
+    const [rows] = await pool.query("SELECT * FROM usuarios WHERE Correo = ?", [correo]);
 
     if (rows.length === 0) {
       return res.status(400).json({ status: "error", message: "Usuario no registrado" });
@@ -65,7 +65,7 @@ export const logUser= async (req, res) => {
       res.status(400).json({ status: 'error', message: 'Credenciales incorrectas' });
     }
   } catch (error) {
-    console.error("Error al obtener usuario por ID:", error);
+  
     res.status(500).json({ status: "error", message: "Error interno del servidor" });
   }
 };
