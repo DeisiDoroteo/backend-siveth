@@ -56,7 +56,7 @@ export const enviarCorreoRecuperacion = async (req, res) => {
           return res.status(500).json({ message: 'Error al enviar el correo electrónico de recuperación.' });
         } else {
           console.log('Correo electrónico de recuperación enviado:', info.response);
-          return res.json({ message: 'Correo electrónico de recuperación enviado exitosamente.' });
+          res.json({ message: 'Correo electrónico de recuperación enviado exitosamente.' });
         }
       });
     } else {
@@ -67,6 +67,7 @@ export const enviarCorreoRecuperacion = async (req, res) => {
     return res.status(500).json({ message: 'Error interno del servidor al enviar el correo electrónico de recuperación.' });
   }
 };
+
 
 export const verificarCodigoRecuperacion = async (req, res) => {
   try {
