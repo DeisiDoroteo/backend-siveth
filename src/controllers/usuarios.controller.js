@@ -40,32 +40,38 @@ export const getUsers = async (req, res) => {
 
 
 
-export const logUser= async (req, res) => {
+export const logUser = async (req, res) => {
   try {
     const { correo, contrasenia } = req.body;
-
-    // Consultar la base de datos para verificar las credenciales
-    const [rows] = await pool.query("SELECT * FROM usuarios WHERE Correo = ?", [correo]);
-
-    if (rows.length === 0) {
-      return res.status(400).json({ status: "error", message: "Usuario no registrado" });
-    }
-
-    // Usuario encontrado en la base de datos
-    const usuario = rows[0];
     
-    // Comparar la contraseña hasheada almacenada en la base de datos con la contraseña proporcionada
-    const passwordMatch = await bcrypt.compare(contrasenia, usuario.Password);
-
-    if (passwordMatch) {
-      // Contraseña correcta: Usuario autenticado
-      res.json({ status: 'success', message: 'Inicio de sesión exitoso' });
+    // Consultar la base de datos para verificar las credenciales
+    const query = 'SELECT * FROM usuarios WHERE Correo = ?';
+    const [rows] = await pool.query(query, [correo]);
+    
+    if (rows.length > 0) {
+      // Usuario encontrado en la base de datos
+      const usuario = rows[0];
+      // Comparar la contraseña hasheada almacenada en la base de datos con la contraseña proporcionada
+      bcrypt.compare(contrasenia, usuario.Password, (err, result) => {
+        if (err) {
+          console.error('Error al comparar contraseñas:', err);
+          res.status(500).json({ status: 'error', message: 'Error interno del servidor' });
+        } else {
+          if (result) {
+            // Contraseña correcta: Usuario autenticado
+            res.json({ status: 'success', message: 'Inicio de sesión exitoso' });
+          } else {
+            // Contraseña incorrecta
+            res.status(400).json({ status: 'error', message: 'Credenciales incorrectas' });
+          }
+        }
+      });
     } else {
-      // Contraseña incorrecta
-      res.status(400).json({ status: 'error', message: 'Credenciales incorrectas' });
+      // Usuario no encontrado en la base de datos
+      res.status(400).json({ status: 'error', message: 'Usuario no registrado' });
     }
   } catch (error) {
-  
-    res.status(500).json({ status: "error", message: "Error interno del servidor" });
+    console.error('Error al realizar la consulta en la base de datos intenta mas tarde:', error);
+    res.status(500).json({ status: 'error', message: 'Error interno del servidor' });
   }
 };

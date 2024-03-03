@@ -3,7 +3,6 @@ import {
   createUser,
   getUsers,
   logUser,
-
 } from "../controllers/usuarios.controller.js";
 
 const router = Router();
