@@ -1,6 +1,7 @@
 import nodemailer from 'nodemailer';
 import { pool } from "../db.js";
 
+
 const transporter = nodemailer.createTransport({
   service: 'gmail',
   auth: {
@@ -33,6 +34,7 @@ export const AsignarCodigo = async (req, res) => {
 };
 
 
+
 export const enviarCorreoRecuperacion = async (req, res) => {
   try {
     const { recipient_email } = req.body;
@@ -46,13 +48,13 @@ export const enviarCorreoRecuperacion = async (req, res) => {
 
       // Configurar el correo electrónico
       const mailOptions = {
-        from: 'siveth.uthh03@gmail.com', // Cambiar con tu dirección de correo electrónico
+        from: 'tucorreo@gmail.com', // Cambiar con tu dirección de correo electrónico de Gmail
         to: recipient_email,
         subject: 'Código de recuperación de contraseña',
         text: `Hola, acabas de recibir tu código de restablecimiento de contraseña. Por favor, ten cuidado y no lo compartas con nadie. Tu código es: ${OTP}`
       };
 
-      // Enviar el correo electrónico
+      // Enviar el correo electrónico usando el transporte SMTP de Gmail
       transporter.sendMail(mailOptions, (error, info) => {
         if (error) {
           console.error('Error al enviar el correo electrónico de recuperación:', error);
