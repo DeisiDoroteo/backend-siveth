@@ -54,12 +54,13 @@ export const enviarCorreoRecuperacion = async (req, res) => {
       transporter.sendMail(mailOptions, (error, info) => {
         if (error) {
           console.error('Error al enviar el correo electrónico de recuperación:', error);
-          return res.status(500).json({ message: 'Error al enviar el correo electrónico de recuperación.' });
+          return res.status(500).json({ message: 'Error al enviar el correo electrónico de recuperación.', status: 'error' });
         } else {
           console.log('Correo electrónico de recuperación enviado:', info.response);
-          res.json({ message: 'Correo electrónico de recuperación enviado exitosamente.' });
+          return res.json({ message: 'Correo electrónico de recuperación enviado exitosamente.', status: 'success' });
         }
       });
+      
     } else {
       return res.status(404).json({ message: 'No se encontró un código de recuperación asociado a este usuario.' });
     }
