@@ -22,11 +22,11 @@ export const AsignarCodigo = async (req, res) => {
     if (selectResults.length > 0) {
       const updateQuery = 'UPDATE codepass SET codigo = ? WHERE fk_usuario = ?';
       await pool.query(updateQuery, [randomCode, correo]);
-      res.json({ status: 'éxito', message: 'Código aleatorio actualizado con éxito', code: randomCode });
+      res.json({ status: 'success', message: 'Código aleatorio actualizado con éxito', code: randomCode });
     } else {
       const insertQuery = 'INSERT INTO codepass (fk_usuario, codigo) VALUES (?, ?)';
       await pool.query(insertQuery, [correo, randomCode]);
-      res.json({ status: 'éxito', message: 'Código aleatorio asignado con éxito', code: randomCode });
+      res.json({ status: 'success', message: 'Código aleatorio asignado con éxito', code: randomCode });
     }
   } catch (error) {
     console.error('Error al asignar código aleatorio:', error);
