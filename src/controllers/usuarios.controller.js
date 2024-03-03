@@ -28,9 +28,6 @@ export const createUser = async (req, res) => {
 };
 
 
-
-
-// Obtener todos los usuarios
 // Obtener todos los usuarios
 export const getUsers = async (req, res) => {
   try {
@@ -40,9 +37,6 @@ export const getUsers = async (req, res) => {
     return res.status(500).json({ message: "Something goes wrong" });
   }
 };
-
-
-
 
 
 // Obtener un usuario por su ID
