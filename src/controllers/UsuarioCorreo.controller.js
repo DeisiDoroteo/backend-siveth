@@ -1,7 +1,6 @@
 import nodemailer from 'nodemailer';
 import { pool } from "../db.js";
-import bcrypt from 'bcrypt';
-
+import bcrypt from 'bcryptjs';
 const transporter = nodemailer.createTransport({
   service: 'gmail',
   auth: {
