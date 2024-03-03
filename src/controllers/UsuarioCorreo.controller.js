@@ -1,5 +1,5 @@
 import nodemailer from 'nodemailer';
-import { pool } from "../db.js"; // Agregar la importación de pool desde el archivo db.js
+import { pool } from "../db.js";
 
 const transporter = nodemailer.createTransport({
   service: 'gmail',
@@ -12,28 +12,23 @@ const transporter = nodemailer.createTransport({
 export const AsignarCodigo = async (req, res) => {
   try {
     const { correo } = req.body;
-
-    // Generar un código aleatorio de 4 dígitos
     const randomCode = Math.floor(1000 + Math.random() * 9000);
 
-    // Consulta para verificar si el usuario ya tiene un código asignado
     const selectQuery = 'SELECT * FROM codepass WHERE fk_usuario = ?';
     const [selectResults] = await pool.query(selectQuery, [correo]);
 
-    // Si el usuario ya tiene un código asignado, actualiza el código existente
     if (selectResults.length > 0) {
       const updateQuery = 'UPDATE codepass SET codigo = ? WHERE fk_usuario = ?';
       await pool.query(updateQuery, [randomCode, correo]);
       res.json({ status: 'success', message: 'Código aleatorio actualizado con éxito', code: randomCode });
     } else {
-      // Si el usuario no tiene un código asignado, inserta uno nuevo
       const insertQuery = 'INSERT INTO codepass (fk_usuario, codigo) VALUES (?, ?)';
       await pool.query(insertQuery, [correo, randomCode]);
       res.json({ status: 'success', message: 'Código aleatorio asignado con éxito', code: randomCode });
     }
   } catch (error) {
-    console.error('Error:', error);
-    return res.status(500).json({ message: 'Something goes wrong' });
+    console.error('Error al asignar código aleatorio:', error);
+    return res.status(500).json({ message: 'Ocurrió un error al asignar el código aleatorio' });
   }
 };
 
