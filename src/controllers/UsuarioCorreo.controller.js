@@ -48,7 +48,7 @@ export const enviarCorreoRecuperacion = async (req, res) => {
 
       // Configurar el correo electrónico
       const mailOptions = {
-        from: 'tucorreo@gmail.com', // Cambiar con tu dirección de correo electrónico de Gmail
+        from: 'siveth.uthh03@gmail.com', // Cambiar con tu dirección de correo electrónico de Gmail
         to: recipient_email,
         subject: 'Código de recuperación de contraseña',
         text: `Hola, acabas de recibir tu código de restablecimiento de contraseña. Por favor, ten cuidado y no lo compartas con nadie. Tu código es: ${OTP}`
