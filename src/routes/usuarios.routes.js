@@ -2,9 +2,8 @@ import { Router } from "express";
 import {
   createUser,
   getUsers,
-  getUserById,
-  deleteUserById,
-  updateUserById ,
+  logUser,
+
 } from "../controllers/usuarios.controller.js";
 
 const router = Router();
@@ -12,21 +11,10 @@ const router = Router();
 // Obtener todos los usuarios
 router.get("/usuarios", getUsers);
 
-// Obtener un usuario por su ID
-router.get("/usuarios/:id", getUserById);
-
-
-// Eliminar un usuario por su ID
-router.delete("/usuarios/:id", deleteUserById);
-
-// INSERT An Employee
+// Insertar un usuario
 router.post("/Create", createUser);
-// router.post("/employees", createEmployee)
 
-
-// Actualizar un usuario por su ID
-router.put("/usuarios/:id", updateUserById);
-
-
+// Insertar un usuario
+router.post("/logueo", logUser);
 
 export default router;

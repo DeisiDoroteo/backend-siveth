@@ -9,6 +9,7 @@
     "routes": [
       { "src": "/ping", "dest": "src/index.js" },
       { "src": "/api/usuarios", "dest": "src/index.js" },
+      { "src": "/api/logueo", "dest": "src/index.js" },
       { "src": "/api/asignar", "dest": "src/index.js" },
       { "src": "/api/sendemail", "dest": "src/index.js" },
       { "src": "/api/verificar", "dest": "src/index.js" },

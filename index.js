@@ -10,64 +10,64 @@ const bcrypt = require('bcryptjs');
 const port = process.env.PORT || 3001;
 
 
-app.use(cors());
-app.use(express.json());
-const db = mysql.createConnection({
-    host:'uk-fast-web1216.main-hosting.eu',
-    user:'u233332198_BD_Siveth',
-    password:'Siveth28032003*',
-    database:'u233332198_BD_Siveth',
+// app.use(cors());
+// app.use(express.json());
+// const db = mysql.createConnection({
+//     host:'uk-fast-web1216.main-hosting.eu',
+//     user:'u233332198_BD_Siveth',
+//     password:'Siveth28032003*',
+//     database:'u233332198_BD_Siveth',
 
-});
-db.connect((err) => {
-  if (err) {
-      console.error('Error al conectar con la base de datos:', err);
-      return;
-  }
-  console.log('Conexión exitosa a la base de datos:', db.config.database);
-});
+// });
+// db.connect((err) => {
+//   if (err) {
+//       console.error('Error al conectar con la base de datos:', err);
+//       return;
+//   }
+//   console.log('Conexión exitosa a la base de datos:', db.config.database);
+// });
 
-// Configurar Nodemailer
-const transporter = nodemailer.createTransport({
-  service: 'gmail',
-  auth: {
-    user: 'siveth.uthh03@gmail.com', // Cambiar con tu dirección de correo electrónico
-    pass: 'opzjuhdnacdqidsy' // Cambiar con tu contraseña
-  }
-});
+// // Configurar Nodemailer
+// const transporter = nodemailer.createTransport({
+//   service: 'gmail',
+//   auth: {
+//     user: 'siveth.uthh03@gmail.com', // Cambiar con tu dirección de correo electrónico
+//     pass: 'opzjuhdnacdqidsy' // Cambiar con tu contraseña
+//   }
+// });
 
-app.get("/", (req, res) => {
-  res.send("Welcome to my first API with Node js!");
-});
+// app.get("/", (req, res) => {
+//   res.send("Welcome to my first API with Node js!");
+// });
 
-// Registro de usuarios
-app.post('/Create', (req, res, next) => {
-  const { nombre, apellidoPaterno, apellidoMaterno, correo, telefono, contrasenia, edad } = req.body;
+// // Registro de usuarios
+// app.post('/Create', (req, res, next) => {
+//   const { nombre, apellidoPaterno, apellidoMaterno, correo, telefono, contrasenia, edad } = req.body;
 
-  // Realiza alguna validación de datos (ejemplo: todos los campos son obligatorios)
-  if (!nombre || !apellidoPaterno || !apellidoMaterno || !correo || !telefono || !contrasenia || !edad) {
-      res.status(400).json({ status: 'error', message: 'Datos incompletos o inválidos' });
-  } else {
-      // Hash de la contraseña
-      bcrypt.hash(contrasenia, 10, (err, hashedPassword) => {
-          if (err) {
-              console.log('Error al hashear la contraseña:', err);
-              res.status(500).json({ status: 'error', message: 'Error interno del servidor' });
-          } else {
-              // Insertar datos en la base de datos con la contraseña hasheada
-              db.query('INSERT INTO Usuarios (Nombre, ApellidoP, ApellidoM, Correo, Telefono, Password, FechaN) VALUES (?, ?, ?, ?, ?, ?, ?)',
-                  [nombre, apellidoPaterno, apellidoMaterno, correo, telefono, hashedPassword, edad], (error, result) => {
-                      if (error) {
-                          console.log('Error al insertar usuario en la base de datos:', error);
-                          res.status(500).json({ status: 'error', message: 'Error interno del servidor' });
-                      } else {
-                          res.json({ status: 'success', message: 'Usuario registrado con éxito' });
-                      }
-                  });
-          }
-      });
-  }
-});
+//   // Realiza alguna validación de datos (ejemplo: todos los campos son obligatorios)
+//   if (!nombre || !apellidoPaterno || !apellidoMaterno || !correo || !telefono || !contrasenia || !edad) {
+//       res.status(400).json({ status: 'error', message: 'Datos incompletos o inválidos' });
+//   } else {
+//       // Hash de la contraseña
+//       bcrypt.hash(contrasenia, 10, (err, hashedPassword) => {
+//           if (err) {
+//               console.log('Error al hashear la contraseña:', err);
+//               res.status(500).json({ status: 'error', message: 'Error interno del servidor' });
+//           } else {
+//               // Insertar datos en la base de datos con la contraseña hasheada
+//               db.query('INSERT INTO Usuarios (Nombre, ApellidoP, ApellidoM, Correo, Telefono, Password, FechaN) VALUES (?, ?, ?, ?, ?, ?, ?)',
+//                   [nombre, apellidoPaterno, apellidoMaterno, correo, telefono, hashedPassword, edad], (error, result) => {
+//                       if (error) {
+//                           console.log('Error al insertar usuario en la base de datos:', error);
+//                           res.status(500).json({ status: 'error', message: 'Error interno del servidor' });
+//                       } else {
+//                           res.json({ status: 'success', message: 'Usuario registrado con éxito' });
+//                       }
+//                   });
+//           }
+//       });
+//   }
+// });
 
 // Logueo
 app.post('/Login', (req, res, next) => {
@@ -200,45 +200,45 @@ app.post('/api/compras/filtrar', (req, res) => {
 
 // En tu archivo de servidor (app.js o index.js)
 
-app.post('/asignar', (req, res) => {
-  const { correo } = req.body;
+// app.post('/asignar', (req, res) => {
+//   const { correo } = req.body;
 
-  // Generar un código aleatorio de 4 dígitos
-  const randomCode = Math.floor(1000 + Math.random() * 9000);
+//   // Generar un código aleatorio de 4 dígitos
+//   const randomCode = Math.floor(1000 + Math.random() * 9000);
 
-  // Consulta para verificar si el usuario ya tiene un código asignado
-  const selectQuery = 'SELECT * FROM codepass WHERE fk_usuario = ?';
-  db.query(selectQuery, [correo], (selectError, selectResults) => {
-    if (selectError) {
-      console.error('Error al verificar si el usuario ya tiene un código asignado:', selectError);
-      res.status(500).json({ status: 'error', message: 'Error interno del servidor' });
-    } else {
-      // Si el usuario ya tiene un código asignado, actualiza el código existente
-      if (selectResults.length > 0) {
-        const updateQuery = 'UPDATE codepass SET codigo = ? WHERE fk_usuario = ?';
-        db.query(updateQuery, [randomCode, correo], (updateError, updateResults) => {
-          if (updateError) {
-            console.error('Error al actualizar el código existente:', updateError);
-            res.status(500).json({ status: 'error', message: 'Error interno del servidor' });
-          } else {
-            res.json({ status: 'success', message: 'Código aleatorio actualizado con éxito', code: randomCode });
-          }
-        });
-       } else {
-         // Si el usuario no tiene un código asignado, inserta uno nuevo
-         const insertQuery = 'INSERT INTO codepass (fk_usuario, codigo) VALUES (?, ?)';
-         db.query(insertQuery, [correo, randomCode], (insertError, insertResults) => {
-           if (insertError) {
-             console.error('Error al asignar el código aleatorio:', insertError);
-             res.status(500).json({ status: 'error', message: 'Error interno del servidor' });
-           } else {
-             res.json({ status: 'success', message: 'Código aleatorio asignado con éxito', code: randomCode });
-           }
-         });
-       }
-    }
-  });
-});
+//   // Consulta para verificar si el usuario ya tiene un código asignado
+//   const selectQuery = 'SELECT * FROM codepass WHERE fk_usuario = ?';
+//   db.query(selectQuery, [correo], (selectError, selectResults) => {
+//     if (selectError) {
+//       console.error('Error al verificar si el usuario ya tiene un código asignado:', selectError);
+//       res.status(500).json({ status: 'error', message: 'Error interno del servidor' });
+//     } else {
+//       // Si el usuario ya tiene un código asignado, actualiza el código existente
+//       if (selectResults.length > 0) {
+//         const updateQuery = 'UPDATE codepass SET codigo = ? WHERE fk_usuario = ?';
+//         db.query(updateQuery, [randomCode, correo], (updateError, updateResults) => {
+//           if (updateError) {
+//             console.error('Error al actualizar el código existente:', updateError);
+//             res.status(500).json({ status: 'error', message: 'Error interno del servidor' });
+//           } else {
+//             res.json({ status: 'success', message: 'Código aleatorio actualizado con éxito', code: randomCode });
+//           }
+//         });
+//        } else {
+//          // Si el usuario no tiene un código asignado, inserta uno nuevo
+//          const insertQuery = 'INSERT INTO codepass (fk_usuario, codigo) VALUES (?, ?)';
+//          db.query(insertQuery, [correo, randomCode], (insertError, insertResults) => {
+//            if (insertError) {
+//              console.error('Error al asignar el código aleatorio:', insertError);
+//              res.status(500).json({ status: 'error', message: 'Error interno del servidor' });
+//            } else {
+//              res.json({ status: 'success', message: 'Código aleatorio asignado con éxito', code: randomCode });
+//            }
+//          });
+//        }
+//     }
+//   });
+// });
 
 
 
@@ -246,94 +246,94 @@ app.post('/asignar', (req, res) => {
 
 
 // Endpoint para enviar correo de recuperación
-app.post('/sendemail', (req, res) => {
-  const { recipient_email } = req.body;
+// app.post('/sendemail', (req, res) => {
+//   const { recipient_email } = req.body;
 
-  // Consultar el código de recuperación en la base de datos
-  const query = 'SELECT codigo FROM codepass WHERE fk_usuario = ?';
-  db.query(query, [recipient_email], (error, results) => {
-    if (error) {
-      console.error('Error al consultar el código de recuperación en la base de datos:', error);
-      return res.status(500).json({ message: 'Error interno del servidor al consultar el código de recuperación.' });
-    } else {
-      if (results.length > 0) {
-        const OTP = results[0].codigo;
+//   // Consultar el código de recuperación en la base de datos
+//   const query = 'SELECT codigo FROM codepass WHERE fk_usuario = ?';
+//   db.query(query, [recipient_email], (error, results) => {
+//     if (error) {
+//       console.error('Error al consultar el código de recuperación en la base de datos:', error);
+//       return res.status(500).json({ message: 'Error interno del servidor al consultar el código de recuperación.' });
+//     } else {
+//       if (results.length > 0) {
+//         const OTP = results[0].codigo;
 
-        // Configurar el correo electrónico
-        const mailOptions = {
-          from: 'siveth.uthh03@gmail.com', // Cambiar con tu dirección de correo electrónico
-          to: recipient_email,
-          subject: 'Código de recuperación de contraseña',
-          text: `Hola, acabas de recivir tu codigo de restablecimiento de contraseña, ten cuidado y no lo compartas con nadie, tu codigo es: ${OTP}`
-        };
+//         // Configurar el correo electrónico
+//         const mailOptions = {
+//           from: 'siveth.uthh03@gmail.com', // Cambiar con tu dirección de correo electrónico
+//           to: recipient_email,
+//           subject: 'Código de recuperación de contraseña',
+//           text: `Hola, acabas de recivir tu codigo de restablecimiento de contraseña, ten cuidado y no lo compartas con nadie, tu codigo es: ${OTP}`
+//         };
 
-        // Enviar el correo electrónico
-        transporter.sendMail(mailOptions, (error, info) => {
-          if (error) {
-            console.error('Error al enviar el correo electrónico de recuperación:', error);
-            return res.status(500).json({ message: 'Error al enviar el correo electrónico de recuperación.' });
-          } else {
-            console.log('Correo electrónico de recuperación enviado:', info.response);
-            return res.json({ message: 'Correo electrónico de recuperación enviado exitosamente.' });
-          }
-        });
-      } else {
-        // El usuario no tiene un código de recuperación asociado en la base de datos
-        return res.status(404).json({ message: 'No se encontró un código de recuperación asociado a este usuario.' });
-      }
-    }
-  });
-});
+//         // Enviar el correo electrónico
+//         transporter.sendMail(mailOptions, (error, info) => {
+//           if (error) {
+//             console.error('Error al enviar el correo electrónico de recuperación:', error);
+//             return res.status(500).json({ message: 'Error al enviar el correo electrónico de recuperación.' });
+//           } else {
+//             console.log('Correo electrónico de recuperación enviado:', info.response);
+//             return res.json({ message: 'Correo electrónico de recuperación enviado exitosamente.' });
+//           }
+//         });
+//       } else {
+//         // El usuario no tiene un código de recuperación asociado en la base de datos
+//         return res.status(404).json({ message: 'No se encontró un código de recuperación asociado a este usuario.' });
+//       }
+//     }
+//   });
+// });
 
 // Ruta para verificar el código de recuperación de contraseña
-app.post('/verificar', (req, res) => {
-  const { correo, codigo } = req.body;
+// app.post('/verificar', (req, res) => {
+//   const { correo, codigo } = req.body;
 
-  // Consultar el código de recuperación en la base de datos
-  const query = 'SELECT * FROM codepass WHERE fk_usuario = ? AND codigo = ?';
-  db.query(query, [correo, codigo], (error, results) => {
-    if (error) {
-      console.error('Error al consultar el código de recuperación en la base de datos:', error);
-      return res.status(500).json({ message: 'Error interno del servidor al consultar el código de recuperación.' });
-    } else {
-      if (results.length > 0) {
-        // Si se encuentra un código coincidente, redirigir al usuario a otra pantalla
-        return res.json({ message: 'Código de recuperación válido. Redirigiendo...' });
-      } else {
-        // Si no se encuentra un código coincidente, devolver un mensaje de error
-        return res.status(404).json({ message: 'El código de recuperación no es válido.' });
-      }
-    }
-  });
-});
+//   // Consultar el código de recuperación en la base de datos
+//   const query = 'SELECT * FROM codepass WHERE fk_usuario = ? AND codigo = ?';
+//   db.query(query, [correo, codigo], (error, results) => {
+//     if (error) {
+//       console.error('Error al consultar el código de recuperación en la base de datos:', error);
+//       return res.status(500).json({ message: 'Error interno del servidor al consultar el código de recuperación.' });
+//     } else {
+//       if (results.length > 0) {
+//         // Si se encuentra un código coincidente, redirigir al usuario a otra pantalla
+//         return res.json({ message: 'Código de recuperación válido. Redirigiendo...' });
+//       } else {
+//         // Si no se encuentra un código coincidente, devolver un mensaje de error
+//         return res.status(404).json({ message: 'El código de recuperación no es válido.' });
+//       }
+//     }
+//   });
+// });
 
 // En tu archivo de servidor (app.js o index.js)
 
 // Ruta para cambiar la contraseña
-app.post("/cambiarContrasenia", (req, res) => {
-  const { correo, contraseniaNueva } = req.body;
+// app.post("/cambiarContrasenia", (req, res) => {
+//   const { correo, contraseniaNueva } = req.body;
 
-  // Generar hash de la contraseña nueva
-  bcrypt.hash(contraseniaNueva, 10, (err, hashedPassword) => {
-    if (err) {
-      console.error("Error al generar hash de la contraseña nueva:", err);
-      res.status(500).send("Error al actualizar la contraseña");
-      return;
-    }
+//   // Generar hash de la contraseña nueva
+//   bcrypt.hash(contraseniaNueva, 10, (err, hashedPassword) => {
+//     if (err) {
+//       console.error("Error al generar hash de la contraseña nueva:", err);
+//       res.status(500).send("Error al actualizar la contraseña");
+//       return;
+//     }
 
-    // Actualizar la contraseña en la base de datos con el hash generado
-    const sql = "UPDATE usuarios SET Password = ? WHERE Correo = ?";
-    db.query(sql, [hashedPassword, correo], (err, result) => {
-      if (err) {
-        console.error("Error al actualizar la contraseña:", err);
-        res.status(500).send("Error al actualizar la contraseña");
-        return;
-      }
-      console.log("Contraseña actualizada correctamente");
-      res.status(200).send("Contraseña actualizada correctamente");
-    });
-  });
-});
+//     // Actualizar la contraseña en la base de datos con el hash generado
+//     const sql = "UPDATE usuarios SET Password = ? WHERE Correo = ?";
+//     db.query(sql, [hashedPassword, correo], (err, result) => {
+//       if (err) {
+//         console.error("Error al actualizar la contraseña:", err);
+//         res.status(500).send("Error al actualizar la contraseña");
+//         return;
+//       }
+//       console.log("Contraseña actualizada correctamente");
+//       res.status(200).send("Contraseña actualizada correctamente");
+//     });
+//   });
+// });
 
 
 

@@ -39,59 +39,33 @@ export const getUsers = async (req, res) => {
 };
 
 
-// Obtener un usuario por su ID
-export const getUserById = async (req, res) => {
+
+export const logUser= async (req, res) => {
   try {
-    const { id } = req.params;
-    const [rows] = await pool.query("SELECT * FROM Usuarios WHERE id = ?", [id]);
+    const { correo, contrasenia } = req.body;
+
+    // Consultar la base de datos para verificar las credenciales
+    const [rows] = await pool.query("SELECT * FROM Usuarios WHERE Correo = ?", [correo]);
 
     if (rows.length === 0) {
-      return res.status(404).json({ status: "error", message: "Usuario no encontrado" });
+      return res.status(400).json({ status: "error", message: "Usuario no registrado" });
     }
 
-    res.json(rows[0]);
+    // Usuario encontrado en la base de datos
+    const usuario = rows[0];
+    
+    // Comparar la contraseña hasheada almacenada en la base de datos con la contraseña proporcionada
+    const passwordMatch = await bcrypt.compare(contrasenia, usuario.Password);
+
+    if (passwordMatch) {
+      // Contraseña correcta: Usuario autenticado
+      res.json({ status: 'success', message: 'Inicio de sesión exitoso' });
+    } else {
+      // Contraseña incorrecta
+      res.status(400).json({ status: 'error', message: 'Credenciales incorrectas' });
+    }
   } catch (error) {
     console.error("Error al obtener usuario por ID:", error);
     res.status(500).json({ status: "error", message: "Error interno del servidor" });
   }
 };
-
-// Eliminar un usuario por su ID
-export const deleteUserById = async (req, res) => {
-  try {
-    const { id } = req.params;
-    const [result] = await pool.query("DELETE FROM Usuarios WHERE id = ?", [id]);
-
-    if (result.affectedRows === 0) {
-      return res.status(404).json({ status: "error", message: "Usuario no encontrado" });
-    }
-
-    res.sendStatus(204);
-  } catch (error) {
-    console.error("Error al eliminar usuario por ID:", error);
-    res.status(500).json({ status: "error", message: "Error interno del servidor" });
-  }
-};
-
-// Actualizar un usuario por su ID
-export const updateUserById = async (req, res) => {
-  try {
-    const { id } = req.params;
-    const { nombre, apellidoPaterno, apellidoMaterno, correo, telefono, contrasenia, edad } = req.body;
-
-    const [result] = await pool.query(
-      "UPDATE Usuarios SET Nombre = ?, ApellidoP = ?, ApellidoM = ?, Correo = ?, Telefono = ?, Password = ?, FechaN = ? WHERE id = ?",
-      [nombre, apellidoPaterno, apellidoMaterno, correo, telefono, contrasenia, edad, id]
-    );
-
-    if (result.affectedRows === 0) {
-      return res.status(404).json({ status: "error", message: "Usuario no encontrado" });
-    }
-
-    res.json({ status: "success", message: "Usuario actualizado con éxito" });
-  } catch (error) {
-    console.error("Error al actualizar usuario por ID:", error);
-    res.status(500).json({ status: "error", message: "Error interno del servidor" });
-  }
-};
-
