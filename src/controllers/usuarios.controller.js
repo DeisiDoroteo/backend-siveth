@@ -19,8 +19,7 @@ export const createUser = async (req, res) => {
       "INSERT INTO usuarios (Nombre, ApellidoP, ApellidoM, Correo, Telefono, Password, FechaN) VALUES (?, ?, ?, ?, ?, ?, ?)",
       [nombre, apellidoPaterno, apellidoMaterno, correo, telefono, hashedPassword, edad]
     );
-
-    res.status(201).json({ message: 'Usuario registrado con éxito' });
+    res.status(201).json({ status: 'success', message: 'Usuario registrado con éxito' });
   } catch (error) {
     console.error('Error al insertar usuario en la base de datos:', error);
     res.status(500).json({ status: 'error', message: 'Error interno del servidor' });

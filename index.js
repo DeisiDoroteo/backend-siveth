@@ -40,34 +40,34 @@ const port = process.env.PORT || 3001;
 //   res.send("Welcome to my first API with Node js!");
 // });
 
-// // Registro de usuarios
-// app.post('/Create', (req, res, next) => {
-//   const { nombre, apellidoPaterno, apellidoMaterno, correo, telefono, contrasenia, edad } = req.body;
+// Registro de usuarios
+app.post('/Create', (req, res, next) => {
+  const { nombre, apellidoPaterno, apellidoMaterno, correo, telefono, contrasenia, edad } = req.body;
 
-//   // Realiza alguna validación de datos (ejemplo: todos los campos son obligatorios)
-//   if (!nombre || !apellidoPaterno || !apellidoMaterno || !correo || !telefono || !contrasenia || !edad) {
-//       res.status(400).json({ status: 'error', message: 'Datos incompletos o inválidos' });
-//   } else {
-//       // Hash de la contraseña
-//       bcrypt.hash(contrasenia, 10, (err, hashedPassword) => {
-//           if (err) {
-//               console.log('Error al hashear la contraseña:', err);
-//               res.status(500).json({ status: 'error', message: 'Error interno del servidor' });
-//           } else {
-//               // Insertar datos en la base de datos con la contraseña hasheada
-//               db.query('INSERT INTO Usuarios (Nombre, ApellidoP, ApellidoM, Correo, Telefono, Password, FechaN) VALUES (?, ?, ?, ?, ?, ?, ?)',
-//                   [nombre, apellidoPaterno, apellidoMaterno, correo, telefono, hashedPassword, edad], (error, result) => {
-//                       if (error) {
-//                           console.log('Error al insertar usuario en la base de datos:', error);
-//                           res.status(500).json({ status: 'error', message: 'Error interno del servidor' });
-//                       } else {
-//                           res.json({ status: 'success', message: 'Usuario registrado con éxito' });
-//                       }
-//                   });
-//           }
-//       });
-//   }
-// });
+  // Realiza alguna validación de datos (ejemplo: todos los campos son obligatorios)
+  if (!nombre || !apellidoPaterno || !apellidoMaterno || !correo || !telefono || !contrasenia || !edad) {
+      res.status(400).json({ status: 'error', message: 'Datos incompletos o inválidos' });
+  } else {
+      // Hash de la contraseña
+      bcrypt.hash(contrasenia, 10, (err, hashedPassword) => {
+          if (err) {
+              console.log('Error al hashear la contraseña:', err);
+              res.status(500).json({ status: 'error', message: 'Error interno del servidor' });
+          } else {
+              // Insertar datos en la base de datos con la contraseña hasheada
+              db.query('INSERT INTO Usuarios (Nombre, ApellidoP, ApellidoM, Correo, Telefono, Password, FechaN) VALUES (?, ?, ?, ?, ?, ?, ?)',
+                  [nombre, apellidoPaterno, apellidoMaterno, correo, telefono, hashedPassword, edad], (error, result) => {
+                      if (error) {
+                          console.log('Error al insertar usuario en la base de datos:', error);
+                          res.status(500).json({ status: 'error', message: 'Error interno del servidor' });
+                      } else {
+                          res.json({ status: 'success', message: 'Usuario registrado con éxito' });
+                      }
+                  });
+          }
+      });
+  }
+});
 
 // Logueo
 app.post('/Login', (req, res, next) => {
